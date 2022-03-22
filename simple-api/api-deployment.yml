@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apinode
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: apinode
+  template:
+    metadata:
+      labels:
+        name: apinode
+    spec:
+      containers:
+        - name: apinode
+          image: image_location
+          ports:
+            - containerPort: 4000

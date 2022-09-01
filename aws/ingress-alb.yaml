@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: "all-applications-on-ingress"
+  namespace: "mynamespace"
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80,"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/load-balancer-name: alb-applications-dev
+    alb.ingress.kubernetes.io/tags: Environment=dev
+    alb.ingress.kubernetes.io/target-type: instance
+  labels:
+    app: all-applications-on-ingress
+spec:
+  rules:
+    - host: api.mydomain.com.br
+      http:
+        paths:
+        - backend:
+            service: 
+              name: "myservice-with-NodePort"
+              port:
+                number: 4000
+          path: /
+          pathType: Prefix
+
+# When specify alb.ingress.kubernetes.io/load-balancer-name
+# AWS generate LoadBalance Application
